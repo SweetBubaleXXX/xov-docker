@@ -5,11 +5,9 @@ RUN apk add --no-cache vim openssh-client gpg gpg-agent git
 RUN mkdir /root/.ssh
 COPY ./id_rsa /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa
-RUN touch /root/.ssh/known_hosts
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
-RUN mkdir /root/xov
-RUN git clone $REPO /root/xov
+RUN touch /root/.ssh/known_hosts && ssh-keyscan github.com >> /root/.ssh/known_hosts
 WORKDIR /root/xov
+RUN git clone $REPO /root/xov
 RUN git config core.fileMode false
 RUN git config user.name $(echo $RANDOM$RANDOM)
 RUN git config user.email "$(git config user.name)@docker"
